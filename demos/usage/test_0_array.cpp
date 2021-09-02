@@ -10,17 +10,17 @@
 
 struct test1 {
 	int a;
-    int *b;
+  int *b;
 };
 
 struct test2 {
-    int a;
-    int b[0];
+  int a;
+  int b[0];
 };
 
 struct test3 {
-    int a;
-    int b[1];
+  int a;
+  int b[1];
 };
 
 int main(int argc, char** argv) {

@@ -17,22 +17,28 @@ int main(void) {
     print_ivec(ivec);
     cout << (is_heap(ivec.begin(), ivec.end()) ? "is_heap" : "is_not_heap") << endl;
 
+    //
     make_heap(ivec.begin(), ivec.end());
     print_ivec(ivec);
     cout << (is_heap(ivec.begin(), ivec.end()) ? "is_heap" : "is_not_heap") << endl;
 
+    //
     pop_heap(ivec.begin(), ivec.end());
     print_ivec(ivec);
+    //
     ivec.pop_back();
     print_ivec(ivec);
     cout << (is_heap(ivec.begin(), ivec.end()) ? "is_heap" : "is_not_heap") << endl;
 
+    //
     ivec.push_back(99);
     print_ivec(ivec);
+    //
     push_heap(ivec.begin(), ivec.end());
     print_ivec(ivec);
     cout << (is_heap(ivec.begin(), ivec.end()) ? "is_heap" : "is_not_heap") << endl;
 
+    //
     sort_heap(ivec.begin(), ivec.end());
     print_ivec(ivec);
     cout << (is_heap(ivec.begin(), ivec.end()) ? "is_heap" : "is_not_heap") << endl;
