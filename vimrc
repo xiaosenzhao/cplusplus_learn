@@ -19,6 +19,9 @@ set cinoptions=g1,h1,i4,l1,m1,N-s,t0,W4,+2s,:2,(0
 " support gnu syntaxt
 let c_gnu = 1
 
+" 行宽不超过120
+let &colorcolumn="121"
+
 " show error for mixed tab-space
 let c_space_errors = 1
 "let c_no_tab_space_error = 1
@@ -158,6 +161,12 @@ let g:nerdtree_tabs_open_on_console_startup=1
 let NERDTreeIgnore=['\.pyc','\~$','\.swp']
 " " 显示书签列表
 let NERDTreeShowBookmarks=1
+"打开vim时如果没有文件自动打开NERDTree
+autocmd vimenter * if !argc()|NERDTree|endif
+""当NERDTree为剩下的唯一窗口时自动关闭
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
 
 "###########################################################################
 set nu
