@@ -1,7 +1,3 @@
-" plug
-" curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    " https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-"
 " 输入设置
 set backspace=2
 set tabstop=2
@@ -19,7 +15,7 @@ set cinoptions=g1,h1,i4,l1,m1,N-s,t0,W4,+2s,:2,(0
 " support gnu syntaxt
 let c_gnu = 1
 
-" 行宽不超过120
+" 行宽不要超过120
 let &colorcolumn="121"
 
 " show error for mixed tab-space
@@ -98,7 +94,7 @@ function! CppLint(...)
 endfunction
 command! -complete=file -nargs=* CppLint call CppLint('<args>')
 
-set tags=./.tags;,.tags
+set tags=./tags;,.tags
 " Specify a directory for plugins
 " " - For Neovim: stdpath('data') . '/plugged'
 " " - Avoid using standard Vim directory names like 'plugin'
@@ -106,7 +102,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'junegunn/vim-easy-align'
 Plug 'skywind3000/quickmenu.vim'
 Plug 'skywind3000/asyncrun.vim'
-Plug 'dense-analysis/ale'
+"Plug 'dense-analysis/ale'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-syntax'
@@ -115,24 +111,14 @@ Plug 'sgur/vim-textobj-parameter'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-fireplace', {'for': 'clojure'}
-"Plug 'rdnetto/YCM-Generator', {'branch': 'stable'}
+Plug 'rdnetto/YCM-Generator', {'branch': 'stable'}
 Plug 'frazrepo/vim-rainbow', {'branch': 'master'}
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
 call plug#end()
+
 let mapleader=","
 
 "###########################################################################
-"markdown
-let g:vim_markdown_frontmatter = 1
-let g:vim_markdown_toml_frontmatter = 1
-let g:vim_markdown_json_frontmatter = 1
-let g:vim_markdown_strikethrough = 1
-let g:vim_markdown_frontmatter = 1
-let g:vim_markdown_new_list_item_indent = 2
-
-"###########################################################################
-"rainbow
+""rainbow
 let g:rainbow_active = 1
 
 let g:rainbow_load_separately = [
@@ -145,21 +131,23 @@ let g:rainbow_load_separately = [
 let g:rainbow_guifgs = ['RoyalBlue3', 'DarkOrange3', 'DarkOrchid3', 'FireBrick']
 let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
 "###########################################################################
+
+"###########################################################################
 "nerdtree
 " 关闭NERDTree快捷键
 map <leader>n :NERDTreeToggle<CR>
-" " 显示行号
+" 显示行号
 let NERDTreeShowLineNumbers=1
 let NERDTreeAutoCenter=1
-" " 是否显示隐藏文件
+" 是否显示隐藏文件
 let NERDTreeShowHidden=1
-" " 设置宽度
-let NERDTreeWinSize=31
-" " 在终端启动vim时，共享NERDTree
+" 设置宽度
+let NERDTreeWinSize=35
+" 在终端启动vim时，共享NERDTree
 let g:nerdtree_tabs_open_on_console_startup=1
-" " 忽略一下文件的显示
+" 忽略一下文件的显示
 let NERDTreeIgnore=['\.pyc','\~$','\.swp']
-" " 显示书签列表
+" 显示书签列表
 let NERDTreeShowBookmarks=1
 "打开vim时如果没有文件自动打开NERDTree
 autocmd vimenter * if !argc()|NERDTree|endif
@@ -168,19 +156,20 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 
+
 "###########################################################################
 set nu
 syntax enable
 set history=500
 set ruler
-" set mouse=a
+"set mouse=a
 set smarttab
 set fencs=utf-8
 set fileencodings=utf-8
 set termencoding=utf-8
 set nobackup
 set nowritebackup
-set noswapfile
+"set noswapfile
 set nowb
 set showmatch
 set completeopt=longest,menu
@@ -191,14 +180,20 @@ set cursorline
 set incsearch
 set hlsearch
 set backspace=indent,eol,start
-set tabstop=4 expandtab
+"set tabstop=4 expandtab
 set shiftwidth=2
 set autoindent
 set smartindent
 set wrap
-"set paste
 set foldenable
 setlocal foldlevel=1
 set foldmethod=indent
 set foldlevelstart=99
 nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
+
+" 自动定位上上次打开位置
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+
