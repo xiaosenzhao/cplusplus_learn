@@ -58,7 +58,6 @@ function! FixCppIndent()
 endfunction
 autocmd FileType cpp nested setlocal indentexpr=FixCppIndent()
 
-
 " 保存时自动删除行尾多余的空白字符
 function! RemoveTrailingSpace()
     if $VIM_HATE_SPACE_ERRORS != '0'
@@ -113,6 +112,8 @@ Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-fireplace', {'for': 'clojure'}
 Plug 'rdnetto/YCM-Generator', {'branch': 'stable'}
 Plug 'frazrepo/vim-rainbow', {'branch': 'master'}
+Plug 'rhysd/vim-clang-format', {'branch': 'master'}
+Plug 'kana/vim-operator-user',
 call plug#end()
 
 let mapleader=","
@@ -195,5 +196,36 @@ nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
+
+"" " clang-format
+"" function! Formatonsave()
+""   let l:formatdiff = 1
+""   let g:clang_format_fallback_style="/Users/zhaoxiaosen/.clang-format"
+""   pyf /usr/local/Cellar/clang-format/15.0.7/share/clang/clang-format.py
+"" endfunction
+"" autocmd BufWritePre *.h,*.cc,*.cpp call Formatonsave()
+
+let g:clang_format#style_options = {
+  \ "Language" : "Cpp",
+            \ "BasedOnStyle" : "Google",
+            \ "ColumnLimit" : "120",
+            \ "DerivePointerAlignment" : "false",
+            \ "PointerAlignment" : "Left",
+            \ "SortIncludes" : "true",
+            \ "IncludeBlocks" : "Preserve",
+            \ "IndentPPDirectives" : "AfterHash",
+            \ "SpacesBeforeTrailingComments" : "2"}
+
+" map to <Leader>cf in C++ code
+autocmd FileType c,cpp,cc,h nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,cc,h vnoremap <buffer><Leader>cf :ClangFormat<CR>
+" Toggle auto formatting:
+nmap <Leader>c :ClangFormat<CR>
+autocmd FileType c,cpp,cc,h map <buffer><Leader>x <Plug>(operator-clang-format)
+
+function! Formatonsave()
+  exec "ClangFormat"
+endfunction
+autocmd BufWriteCmd *.h,*.cc,*.cpp call Formatonsave()
 
 
