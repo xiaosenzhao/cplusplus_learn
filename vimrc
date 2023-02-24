@@ -226,6 +226,6 @@ autocmd FileType c,cpp,cc,h map <buffer><Leader>x <Plug>(operator-clang-format)
 function! Formatonsave()
   exec "ClangFormat"
 endfunction
-autocmd BufWriteCmd *.h,*.cc,*.cpp call Formatonsave()
+autocmd BufWritePre *.h,*.cc,*.cpp call Formatonsave()
 
 
