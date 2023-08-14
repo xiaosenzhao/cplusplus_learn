@@ -1,14 +1,40 @@
 #include <benchmark/benchmark.h>
 #include <string>
 
+// clang++ -Wall -std=c++17 string_optimize.cpp -I /usr/local/include -L /usr/local/lib -L /usr/lib -pthread -lbenchmark
+// -o test
+/*
+Run on (12 X 2600 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB
+  L1 Instruction 32 KiB
+  L2 Unified 256 KiB (x6)
+  L3 Unified 12288 KiB
+Load Average: 3.92, 5.49, 5.57
+-----------------------------------------------------------------
+Benchmark                       Time             CPU   Iterations
+-----------------------------------------------------------------
+BM_remove_1                 35819 ns        35585 ns        19007
+BM_remove_2                 35752 ns        35685 ns        19759
+BM_remove_3                  4956 ns         4945 ns       141312
+BM_remove_4                  4830 ns         4824 ns       145724
+BM_remove_5                  5372 ns         5364 ns       127238
+BM_remove_6                  1885 ns         1881 ns       373122
+BM_remove_6_no_reserve       1907 ns         1904 ns       370953
+BM_remove_7                  3568 ns         3562 ns       196025
+BM_remove_inplace            3120 ns         3116 ns       223393
+*/
+
 // std::string s = "BBHFGDHGFDTREHBGFYRTAGFYGIWERWQAGFJNBVNRETWEAHGFFFUJHRWEAGHDFG";
-#define BENCHMARKFUNC(func)                        \
-  static void BM_##func(benchmark::State& state) { \
-    for (auto _ : state) {                         \
-      std::string s = "BBBBBBBBBBBBBBBBBBBBB";     \
-      func(s);                                     \
-    }                                              \
-  }                                                \
+#define BENCHMARKFUNC(func)                                                                                          \
+  static void BM_##func(benchmark::State& state) {                                                                   \
+    for (auto _ : state) {                                                                                           \
+      std::string s =                                                                                                \
+          "BBBBBBBBBBBBBBBBBBBBBHDSKLFJSDLKFJNLSDKAUFOWEIQNFGDSALJGF LKSDAJFLSDAKFJDSLAKFHJSDHFASLJFLSADJF OWEQIUE " \
+          "RTW;ZFJHDS";                                                                                              \
+      func(s);                                                                                                       \
+    }                                                                                                                \
+  }                                                                                                                  \
   BENCHMARK(BM_##func);
 
 std::string remove_1(std::string s) {
@@ -85,6 +111,17 @@ std::string remove_6(const std::string& s) {
   return result;
 }
 BENCHMARKFUNC(remove_6);
+std::string remove_6_no_reserve(const std::string& s) {
+  std::string result;
+  result.reserve(s.length());
+  for (auto it = s.begin(), end = s.end(); it != end; ++it) {
+    if (*it != 'A') {
+      result += *it;
+    }
+  }
+  return result;
+}
+BENCHMARKFUNC(remove_6_no_reserve);
 
 // 使用更好的算法
 std::string remove_7(const std::string& s) {
